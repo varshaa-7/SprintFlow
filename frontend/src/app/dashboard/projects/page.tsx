@@ -37,12 +37,12 @@ function ProjectDrawer({ project, onClose }: { project: Project; onClose: () => 
             <div>
               <h2 className="text-sm font-semibold">{project.name}</h2>
               {project.description && (
-                <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>{project.description}</p>
+                <p className="text-xs mt-0.5" style={{ color: 'var(--muted-strong)' }}>{project.description}</p>
               )}
             </div>
           </div>
           <button onClick={onClose}
-            style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', fontSize: 20 }}>×</button>
+            style={{ background: 'none', border: 'none', color: 'var(--muted-strong)', cursor: 'pointer', fontSize: 20 }}>×</button>
         </div>
 
         {/* Stats row */}
@@ -62,7 +62,7 @@ function ProjectDrawer({ project, onClose }: { project: Project; onClose: () => 
         {/* Issues list */}
         <div className="flex-1 p-5">
           <h3 className="text-xs font-semibold uppercase tracking-wider mb-4"
-            style={{ color: 'rgba(255,255,255,0.3)' }}>
+            style={{ color: 'var(--muted-strong)' }}>
             Issues ({issues.length})
           </h3>
 
@@ -72,7 +72,7 @@ function ProjectDrawer({ project, onClose }: { project: Project; onClose: () => 
                 style={{ borderColor: 'var(--accent)', borderTopColor: 'transparent' }} />
             </div>
           ) : issues.length === 0 ? (
-            <div className="text-center py-10" style={{ color: 'rgba(255,255,255,0.3)' }}>
+            <div className="text-center py-10" style={{ color: 'var(--muted-strong)' }}>
               <p className="text-3xl mb-2">◈</p>
               <p className="text-sm">No issues in this project yet</p>
             </div>
@@ -89,7 +89,7 @@ function ProjectDrawer({ project, onClose }: { project: Project; onClose: () => 
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate">{issue.title}</p>
                         {issue.description && (
-                          <p className="text-xs mt-0.5 truncate" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                          <p className="text-xs mt-0.5 truncate" style={{ color: 'var(--muted-strong)' }}>
                             {issue.description}
                           </p>
                         )}
@@ -98,11 +98,11 @@ function ProjectDrawer({ project, onClose }: { project: Project; onClose: () => 
                             {statusCfg.label}
                           </span>
                           {issue.assignedTo && (
-                            <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                            <span className="text-xs" style={{ color: 'var(--muted-strong)' }}>
                               → {issue.assignedTo.name}
                             </span>
                           )}
-                          <span className="text-xs ml-auto" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                          <span className="text-xs ml-auto" style={{ color: 'var(--muted-strong)' }}>
                             {timeAgo(issue.updatedAt)}
                           </span>
                         </div>
@@ -151,7 +151,7 @@ export default function ProjectsPage() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-semibold">Projects</h1>
-          <p className="text-sm mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>Organize issues into projects</p>
+          <p className="text-sm mt-0.5" style={{ color: 'var(--muted-strong)' }}>Organize issues into projects</p>
         </div>
         <button className="btn btn-primary" onClick={() => setShowCreate(s => !s)}>
           <span>+</span> New Project
@@ -168,7 +168,7 @@ export default function ProjectsPage() {
             <input className="input" placeholder="Description (optional)" value={form.description}
               onChange={e => setForm(f => ({ ...f, description: e.target.value }))} />
             <div>
-              <label className="text-xs mb-2 block" style={{ color: 'rgba(255,255,255,0.4)' }}>Color</label>
+              <label className="text-xs mb-2 block" style={{ color: 'var(--muted-strong)' }}>Color</label>
               <div className="flex gap-2 flex-wrap">
                 {COLORS.map(c => (
                   <button key={c} onClick={() => setForm(f => ({ ...f, color: c }))}
@@ -194,7 +194,7 @@ export default function ProjectsPage() {
           <div className="w-6 h-6 rounded-full border-2 animate-spin" style={{ borderColor: 'var(--accent)', borderTopColor: 'transparent' }} />
         </div>
       ) : projects.length === 0 ? (
-        <div className="card p-12 text-center" style={{ color: 'rgba(255,255,255,0.3)' }}>
+        <div className="card p-12 text-center" style={{ color: 'var(--muted-strong)' }}>
           <p className="text-4xl mb-3">◫</p>
           <p className="text-sm">No projects yet</p>
         </div>
@@ -209,16 +209,16 @@ export default function ProjectsPage() {
                 </div>
                 <button onClick={() => confirm(`Delete "${project.name}"?`) && deleteProject.mutate(project.id)}
                   className="text-xs opacity-60 hover:opacity-100 hover:text-red-400 transition-all"
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.3)' }}>
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted-strong)' }}>
                   ✕
                 </button>
               </div>
               <h3 className="font-semibold text-sm mb-1">{project.name}</h3>
               {project.description && (
-                <p className="text-xs mb-3 leading-relaxed" style={{ color: 'rgba(255,255,255,0.4)' }}>{project.description}</p>
+                <p className="text-xs mb-3 leading-relaxed" style={{ color: 'var(--muted-strong)' }}>{project.description}</p>
               )}
               <div className="flex items-center gap-2 pt-3" style={{ borderTop: '1px solid var(--border)' }}>
-                <span className="text-xs px-2 py-0.5 rounded" style={{ background: 'var(--surface-3)', color: 'rgba(255,255,255,0.5)' }}>
+                <span className="text-xs px-2 py-0.5 rounded" style={{ background: 'var(--surface-3)', color: 'var(--muted)' }}>
                   {project._count?.issues || 0} issues
                 </span>
                 <div className="w-2 h-2 rounded-full ml-auto" style={{ background: project.color }} />

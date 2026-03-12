@@ -50,8 +50,8 @@ export default function LoginPage() {
               <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-          <h1 className="text-2xl font-semibold text-white">IssueFlow</h1>
-          <p className="text-sm mt-1" style={{ color: 'rgba(255,255,255,0.4)' }}>Multi-tenant issue tracking</p>
+          <h1 className="text-2xl font-semibold">IssueFlow</h1>
+          <p className="text-sm mt-1" style={{ color: 'var(--muted-strong)' }}>Multi-tenant issue tracking</p>
         </div>
 
         <div className="card p-8">
@@ -60,7 +60,7 @@ export default function LoginPage() {
             {(['login', 'register'] as const).map(m => (
               <button key={m} onClick={() => setMode(m)} className="flex-1 py-2 rounded-md text-sm font-medium transition-all" style={{
                 background: mode === m ? 'var(--surface-4)' : 'transparent',
-                color: mode === m ? 'white' : 'rgba(255,255,255,0.4)',
+                  color: mode === m ? 'var(--text)' : 'var(--muted-strong)',
               }}>
                 {m === 'login' ? 'Sign In' : 'Create Org'}
               </button>
@@ -71,21 +71,21 @@ export default function LoginPage() {
             {mode === 'register' && (
               <>
                 <div>
-                  <label className="block text-xs font-medium mb-2" style={{ color: 'rgba(255,255,255,0.5)' }}>Your Name</label>
+                  <label className="block text-xs font-medium mb-2" style={{ color: 'var(--muted)' }}>Your Name</label>
                   <input className="input" value={form.name} onChange={set('name')} placeholder="Jane Smith" required />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium mb-2" style={{ color: 'rgba(255,255,255,0.5)' }}>Organization Name</label>
+                  <label className="block text-xs font-medium mb-2" style={{ color: 'var(--muted)' }}>Organization Name</label>
                   <input className="input" value={form.tenantName} onChange={set('tenantName')} placeholder="Acme Corporation" required />
                 </div>
               </>
             )}
             <div>
-              <label className="block text-xs font-medium mb-2" style={{ color: 'rgba(255,255,255,0.5)' }}>Email</label>
+              <label className="block text-xs font-medium mb-2" style={{ color: 'var(--muted)' }}>Email</label>
               <input className="input" type="email" value={form.email} onChange={set('email')} placeholder="you@company.com" required />
             </div>
             <div>
-              <label className="block text-xs font-medium mb-2" style={{ color: 'rgba(255,255,255,0.5)' }}>Password</label>
+              <label className="block text-xs font-medium mb-2" style={{ color: 'var(--muted)' }}>Password</label>
               <input className="input" type="password" value={form.password} onChange={set('password')} placeholder="••••••••" required minLength={8} />
             </div>
 
@@ -110,7 +110,7 @@ export default function LoginPage() {
           {/* Demo accounts */}
           {mode === 'login' && (
             <div className="mt-6 pt-6" style={{ borderTop: '1px solid var(--border)' }}>
-              <p className="text-xs font-medium mb-3" style={{ color: 'rgba(255,255,255,0.3)' }}>Demo accounts</p>
+              <p className="text-xs font-medium mb-3" style={{ color: 'var(--muted-strong)' }}>Demo accounts</p>
               <div className="space-y-2">
                 {[
                   { email: 'alice@acme.com', org: 'Acme Corp (PRO)' },
@@ -118,7 +118,7 @@ export default function LoginPage() {
                   { email: 'peter@initech.com', org: 'Initech Solutions' },
                 ].map(demo => (
                   <button key={demo.email} onClick={() => setForm(f => ({ ...f, email: demo.email, password: 'password123' }))}
-                    className="w-full text-left px-3 py-2 rounded-lg text-xs transition-all" style={{ background: 'var(--surface-2)', color: 'rgba(255,255,255,0.6)' }}
+                    className="w-full text-left px-3 py-2 rounded-lg text-xs transition-all" style={{ background: 'var(--surface-2)', color: 'var(--muted)' }}
                   >
                     <span className="font-mono" style={{ color: 'var(--accent)' }}>{demo.email}</span>
                     <span style={{ color: 'rgba(255,255,255,0.3)' }}> — {demo.org}</span>

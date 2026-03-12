@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth';
+import { useTheme } from '@/lib/theme';
 import { initials } from '@/lib/utils';
 
 const NAV = [
@@ -35,6 +36,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     PRO: 'rgba(124,106,247,0.4)',
     ENTERPRISE: 'rgba(245,158,11,0.4)',
   };
+
+  const { theme, toggleTheme } = useTheme();
+  const isDark = theme === 'dark';
 
   return (
     <div className="flex min-h-screen" style={{ background: 'var(--surface-0)' }}>
@@ -68,17 +72,31 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         {/* User footer */}
         <div className="p-3" style={{ borderTop: '1px solid var(--border)' }}>
           <div className="flex items-center gap-3 px-2 py-2">
-            <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0" style={{ background: 'var(--surface-4)', color: 'rgba(255,255,255,0.7)' }}>
+            <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0" style={{ background: 'var(--surface-4)', color: 'var(--muted)' }}>
               {initials(user.name)}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-medium truncate">{user.name}</p>
-              <p className="text-xs truncate" style={{ color: 'rgba(255,255,255,0.35)' }}>{user.role}</p>
+              <p className="text-xs truncate" style={{ color: 'var(--muted-strong)' }}>{user.role}</p>
             </div>
-            <button onClick={logout} className="text-xs px-2 py-1 rounded" style={{ color: 'rgba(255,255,255,0.3)', background: 'transparent', border: 'none', cursor: 'pointer' }}
-              title="Sign out">
-              ↩
-            </button>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={toggleTheme}
+                className="text-xs px-2 py-1 rounded"
+                style={{ color: 'var(--muted)', background: 'transparent', border: 'none', cursor: 'pointer' }}
+                title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+              >
+                {isDark ? '☀️' : '🌙'}
+              </button>
+              <button
+                onClick={logout}
+                className="text-xs px-2 py-1 rounded"
+                style={{ color: 'var(--muted)', background: 'transparent', border: 'none', cursor: 'pointer' }}
+                title="Sign out"
+              >
+                ↩
+              </button>
+            </div>
           </div>
         </div>
       </aside>

@@ -39,7 +39,7 @@ const { data: members = [] } = useQuery<any[]>({
       <div className="card w-full max-w-lg animate-slide-up">
         <div className="px-6 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid var(--border)' }}>
           <h2 className="text-sm font-semibold">New Issue</h2>
-          <button onClick={onClose} style={{ color: 'rgba(255,255,255,0.4)', background: 'none', border: 'none', cursor: 'pointer', fontSize: 18 }}>×</button>
+            <button onClick={onClose} style={{ color: 'var(--muted-strong)', background: 'none', border: 'none', cursor: 'pointer', fontSize: 18 }}>×</button>
         </div>
         <div className="p-6 space-y-4">
           <div>
@@ -53,13 +53,13 @@ const { data: members = [] } = useQuery<any[]>({
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs mb-1.5" style={{ color: 'rgba(255,255,255,0.4)' }}>Status</label>
+              <label className="block text-xs mb-1.5" style={{ color: 'var(--muted-strong)' }}>Status</label>
               <select className="input" value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}>
                 {STATUSES.map(s => <option key={s} value={s}>{STATUS_CONFIG[s].label}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-xs mb-1.5" style={{ color: 'rgba(255,255,255,0.4)' }}>Priority</label>
+              <label className="block text-xs mb-1.5" style={{ color: 'var(--muted-strong)' }}>Priority</label>
               <select className="input" value={form.priority} onChange={e => setForm(f => ({ ...f, priority: e.target.value }))}>
                 {PRIORITIES.map(p => <option key={p} value={p}>{PRIORITY_CONFIG[p].icon} {PRIORITY_CONFIG[p].label}</option>)}
               </select>
@@ -67,7 +67,7 @@ const { data: members = [] } = useQuery<any[]>({
           </div>
           <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-xs mb-1.5" style={{ color: 'rgba(255,255,255,0.4)' }}>Assign to</label>
+            <label className="block text-xs mb-1.5" style={{ color: 'var(--muted-strong)' }}>Assign to</label>
             <select className="input" value={form.assignedToId}
               onChange={e => setForm(f => ({ ...f, assignedToId: e.target.value }))}>
               <option value="">Unassigned</option>
@@ -77,7 +77,7 @@ const { data: members = [] } = useQuery<any[]>({
             </select>
           </div>
           <div>
-            <label className="block text-xs mb-1.5" style={{ color: 'rgba(255,255,255,0.4)' }}>Project</label>
+            <label className="block text-xs mb-1.5" style={{ color: 'var(--muted-strong)' }}>Project</label>
             <select className="input" value={form.projectId}
               onChange={e => setForm(f => ({ ...f, projectId: e.target.value }))}>
               <option value="">No project</option>
@@ -151,7 +151,7 @@ export default function IssuesPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-semibold">Issues</h1>
-          {meta && <p className="text-sm mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>{meta.total} total</p>}
+          {meta && <p className="text-sm mt-0.5" style={{ color: 'var(--muted-strong)' }}>{meta.total} total</p>}
         </div>
         <button className="btn btn-primary" onClick={() => setShowCreate(true)}>
           <span className="text-lg leading-none">+</span> New Issue
@@ -176,11 +176,11 @@ export default function IssuesPage() {
       {/* Issues table */}
       <div className="card overflow-hidden">
         {isLoading ? (
-          <div className="p-12 text-center" style={{ color: 'rgba(255,255,255,0.3)' }}>
+          <div className="p-12 text-center" style={{ color: 'var(--muted-strong)' }}>
             <div className="w-6 h-6 rounded-full border-2 animate-spin mx-auto" style={{ borderColor: 'var(--accent)', borderTopColor: 'transparent' }} />
           </div>
         ) : issues.length === 0 ? (
-          <div className="p-12 text-center" style={{ color: 'rgba(255,255,255,0.3)' }}>
+          <div className="p-12 text-center" style={{ color: 'var(--muted-strong)' }}>
             <p className="text-4xl mb-3">◈</p>
             <p className="text-sm">No issues found</p>
             <button className="btn btn-primary mt-4 text-sm" onClick={() => setShowCreate(true)}>Create first issue</button>
@@ -190,7 +190,7 @@ export default function IssuesPage() {
             <thead>
               <tr style={{ borderBottom: '1px solid var(--border)' }}>
                 {['Priority', 'Title', 'Status', 'Project', 'Assignee', 'Updated', ''].map(h => (
-                  <th key={h} className="px-4 py-3 text-left text-xs font-medium" style={{ color: 'rgba(255,255,255,0.35)' }}>{h}</th>
+                  <th key={h} className="px-4 py-3 text-left text-xs font-medium" style={{ color: 'var(--muted-strong)' }}>{h}</th>
                 ))}
               </tr>
             </thead>
@@ -206,11 +206,11 @@ export default function IssuesPage() {
                     <td className="px-4 py-3 max-w-xs">
                       <p className="font-medium truncate">{issue.title}</p>
                       {issue.description && (
-                        <p className="text-xs truncate mt-0.5" style={{ color: 'rgba(255,255,255,0.35)' }}>{issue.description}</p>
+                        <p className="text-xs truncate mt-0.5" style={{ color: 'var(--muted-strong)' }}>{issue.description}</p>
                       )}
                     </td>
                     <td className="px-4 py-3">
-                      <select className="text-xs rounded-lg px-2 py-1 cursor-pointer border-0 outline-none" style={{ background: 'var(--surface-3)', color: 'rgba(255,255,255,0.7)' }}
+                      <select className="text-xs rounded-lg px-2 py-1 cursor-pointer border-0 outline-none" style={{ background: 'var(--surface-3)', color: 'var(--muted)' }}
                         value={issue.status} onChange={e => updateStatus.mutate({ id: issue.id, status: e.target.value as Status })}>
                         {STATUSES.map(s => <option key={s} value={s}>{STATUS_CONFIG[s].label}</option>)}
                       </select>
@@ -220,12 +220,12 @@ export default function IssuesPage() {
                         <span className="text-xs px-2 py-1 rounded-full" style={{ background: `${issue.project.color}20`, color: issue.project.color }}>
                           {issue.project.name}
                         </span>
-                      ) : <span style={{ color: 'rgba(255,255,255,0.2)' }}>—</span>}
+                      ) : <span style={{ color: 'var(--muted-strong)' }}>—</span>}
                     </td>
                     <td className="px-4 py-3" onClick={e => e.stopPropagation()}>
                       <select
                         className="text-xs rounded-lg px-2 py-1 cursor-pointer border-0 outline-none"
-                        style={{ background: 'var(--surface-3)', color: 'rgba(255,255,255,0.7)', maxWidth: 120 }}
+                        style={{ background: 'var(--surface-3)', color: 'var(--muted)', maxWidth: 120 }}
                         value={issue.assignedTo?.id || ''}
                         onChange={e => updateAssignee.mutate({ id: issue.id, assignedToId: e.target.value || null })}>
                         <option value="">Unassigned</option>
@@ -234,13 +234,13 @@ export default function IssuesPage() {
                         ))}
                       </select>
                     </td>
-                    <td className="px-4 py-3 text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                    <td className="px-4 py-3 text-xs" style={{ color: 'var(--muted-strong)' }}>
                       {timeAgo(issue.updatedAt)}
                     </td>
                     <td className="px-4 py-3">
                       <button onClick={() => { if (confirm('Delete this issue?')) deleteIssue.mutate(issue.id); }}
                         className="text-xs opacity-0 group-hover:opacity-100 hover:text-red-400 transition-all"
-                        style={{ color: 'rgba(255,255,255,0.3)', background: 'none', border: 'none', cursor: 'pointer' }}>
+                        style={{ color: 'var(--muted-strong)', background: 'none', border: 'none', cursor: 'pointer' }}>
                         ✕
                       </button>
                     </td>
@@ -255,7 +255,7 @@ export default function IssuesPage() {
       {/* Pagination */}
       {meta && meta.pages > 1 && (
         <div className="flex items-center justify-between mt-4">
-          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
+          <p className="text-xs" style={{ color: 'var(--muted-strong)' }}>
             Page {page} of {meta.pages} ({meta.total} issues)
           </p>
           <div className="flex gap-2">
