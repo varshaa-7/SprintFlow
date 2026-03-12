@@ -112,6 +112,17 @@ export default function IssuesPage() {
   const [page, setPage] = useState(1);
   const qc = useQueryClient();
 
+  const { data: members = [] } = useQuery<any[]>({
+    queryKey: ['tenant-members'],
+    queryFn: () => api.get('/api/tenants/me').then(r => r.data.users),
+  });
+
+  const updateAssignee = useMutation({
+    mutationFn: ({ id, assignedToId }: { id: string; assignedToId: string | null }) =>
+      api.patch(`/api/issues/${id}`, { assignedToId }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['issues'] }),
+  });
+
   const params = new URLSearchParams({ page: String(page), limit: '15', ...filters });
   const { data, isLoading } = useQuery({
     queryKey: ['issues', filters, page],
@@ -211,15 +222,17 @@ export default function IssuesPage() {
                         </span>
                       ) : <span style={{ color: 'rgba(255,255,255,0.2)' }}>—</span>}
                     </td>
-                    <td className="px-4 py-3">
-                      {issue.assignedTo ? (
-                        <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={{ background: 'var(--surface-4)', color: 'rgba(255,255,255,0.6)' }}>
-                            {initials(issue.assignedTo.name)}
-                          </div>
-                          <span className="text-xs truncate max-w-[80px]" style={{ color: 'rgba(255,255,255,0.6)' }}>{issue.assignedTo.name}</span>
-                        </div>
-                      ) : <span style={{ color: 'rgba(255,255,255,0.2)' }}>—</span>}
+                    <td className="px-4 py-3" onClick={e => e.stopPropagation()}>
+                      <select
+                        className="text-xs rounded-lg px-2 py-1 cursor-pointer border-0 outline-none"
+                        style={{ background: 'var(--surface-3)', color: 'rgba(255,255,255,0.7)', maxWidth: 120 }}
+                        value={issue.assignedTo?.id || ''}
+                        onChange={e => updateAssignee.mutate({ id: issue.id, assignedToId: e.target.value || null })}>
+                        <option value="">Unassigned</option>
+                        {members.map((m: any) => (
+                          <option key={m.id} value={m.id}>{m.name}</option>
+                        ))}
+                      </select>
                     </td>
                     <td className="px-4 py-3 text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
                       {timeAgo(issue.updatedAt)}
