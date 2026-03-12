@@ -1,0 +1,182 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// TENANT (Organization/Company)
+
+model Tenant {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  slug      String   @unique  // URL-safe identifier e.g. "acme-corp"
+  plan      Plan     @default(FREE)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  users     User[]
+  issues    Issue[]
+  projects  Project[]
+  labels    Label[]
+
+  @@map("tenants")
+}
+
+// USER
+model User {
+  id           String   @id @default(uuid())
+  email        String
+  passwordHash String
+  name         String
+  role         Role     @default(MEMBER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Tenant isolation foreign key
+  tenantId     String
+  tenant       Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  // Relations
+  createdIssues   Issue[]   @relation("CreatedBy")
+  assignedIssues  Issue[]   @relation("AssignedTo")
+  comments        Comment[]
+
+  // Unique email per tenant (not globally) — same person can have accounts at different orgs
+  @@unique([email, tenantId])
+  @@map("users")
+}
+
+
+// PROJECT
+
+model Project {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  color       String   @default("#6366f1")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Tenant isolation
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  issues      Issue[]
+
+  @@unique([name, tenantId])
+  @@map("projects")
+}
+
+// ISSUE
+
+model Issue {
+  id          String      @id @default(uuid())
+  title       String
+  description String?
+  status      Status      @default(OPEN)
+  priority    Priority    @default(MEDIUM)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  dueDate     DateTime?
+
+  // Tenant isolation — critical security boundary
+  tenantId    String
+  tenant      Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  // Project (optional grouping)
+  projectId   String?
+  project     Project?    @relation(fields: [projectId], references: [id])
+
+  // Creator
+  createdById String
+  createdBy   User        @relation("CreatedBy", fields: [createdById], references: [id])
+
+  // Assignee (optional)
+  assignedToId String?
+  assignedTo   User?      @relation("AssignedTo", fields: [assignedToId], references: [id])
+
+  // Relations
+  comments    Comment[]
+  labels      IssueLabel[]
+
+  // Index on tenantId ensures queries never cross tenant boundaries
+  @@index([tenantId])
+  @@index([tenantId, status])
+  @@index([tenantId, priority])
+  @@map("issues")
+}
+
+// COMMENT
+
+model Comment {
+  id        String   @id @default(uuid())
+  body      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  issueId   String
+  issue     Issue    @relation(fields: [issueId], references: [id], onDelete: Cascade)
+
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+
+  @@map("comments")
+}
+
+// LABEL / ISSUE-LABEL
+
+model Label {
+  id       String       @id @default(uuid())
+  name     String
+  color    String       @default("#64748b")
+
+  tenantId String
+  tenant   Tenant       @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  issues   IssueLabel[]
+
+  @@unique([name, tenantId])
+  @@map("labels")
+}
+
+model IssueLabel {
+  issueId String
+  issue   Issue  @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  labelId String
+  label   Label  @relation(fields: [labelId], references: [id], onDelete: Cascade)
+
+  @@id([issueId, labelId])
+  @@map("issue_labels")
+}
+
+// ENUMS
+enum Role {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum Plan {
+  FREE
+  PRO
+  ENTERPRISE
+}
+
+enum Status {
+  OPEN
+  IN_PROGRESS
+  IN_REVIEW
+  DONE
+  CANCELLED
+}
+
+enum Priority {
+  URGENT
+  HIGH
+  MEDIUM
+  LOW
+}
