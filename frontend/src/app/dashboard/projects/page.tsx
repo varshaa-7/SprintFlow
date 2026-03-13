@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '@/lib/api';
-import { Project } from '@/types';
+import { Project, Issue } from '@/types';
 import { STATUS_CONFIG, PRIORITY_CONFIG, timeAgo } from '@/lib/utils';
 
 const COLORS = ['#6366f1','#f59e0b','#10b981','#3b82f6','#ef4444','#8b5cf6','#06b6d4','#f97316'];
